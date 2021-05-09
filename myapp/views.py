@@ -35,11 +35,11 @@ def signin(request):
 
 def signup(request):
 	if request.method =='POST':
+		
 		form = SignUpForm(request.POST)
 		if form.is_valid():
 			user = form.save()
 			user.refresh_from_db()
-			# import pdb;pdb.set_trace()
 			user.profile.genre = form.cleaned_data.get('genre')
 			user.profile.birth_date = form.cleaned_data.get('birth_date')
 			user.profile.merritual_staus = form.cleaned_data.get('merritual_staus')
@@ -48,7 +48,6 @@ def signup(request):
 			return redirect('myapp:login')
 	else:
 		form = SignUpForm()
-		# import pdb;pdb.set_trace()
 	return render(request,'myapp/signup.html',{'form':form})
 
 
