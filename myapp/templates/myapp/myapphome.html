@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block contents %}
+{% if user %}
+<h1>Hello {{user.username }}</h1>
+
+<h1>Welcome to myapp home page </h1><br>
+
+<h2>You can now logout </h2>
+
+<a href="{% url 'myapp:logout' %}"><button type="button" class="btn btn-warning">Logout</button></a>
+{% else %}
+<h1>You are not logged in kindly login </h1>
+{% endif %}
+{% endblock %}
+
+
