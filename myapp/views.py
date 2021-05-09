@@ -22,6 +22,7 @@ def signin(request):
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			login(request, user)
+			messages.success(request,'You are successfully logged in')
 			return redirect('myapp:home')
 		else:
 			messages.error(request,'User Id not matched')
@@ -36,10 +37,18 @@ def signup(request):
 	if request.method =='POST':
 		form = SignUpForm(request.POST)
 		if form.is_valid():
-			form.save()
+			user = form.save()
+			user.refresh_from_db()
+			# import pdb;pdb.set_trace()
+			user.profile.genre = form.cleaned_data.get('genre')
+			user.profile.birth_date = form.cleaned_data.get('birth_date')
+			user.profile.merritual_staus = form.cleaned_data.get('merritual_staus')
+			user.save()
+			messages.success(request,"Successfully registered with us, plz signin now")
 			return redirect('myapp:login')
 	else:
 		form = SignUpForm()
+		# import pdb;pdb.set_trace()
 	return render(request,'myapp/signup.html',{'form':form})
 
 
@@ -47,4 +56,4 @@ def signup(request):
 
 def signout(request):
 	logout(request)
-	return redirect('myapp:signup')
+	return redirect('myapp:login')
